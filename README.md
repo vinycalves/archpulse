@@ -131,7 +131,7 @@ See [docs/roadmap.md](docs/roadmap.md) for the details.
 
 ## Contributing
 
-Contributions are welcome — especially new rules, renderers, sample repositories, and UI polish. Read [CONTRIBUTING.md](CONTRIBUTING.md) and [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md). Look for issues labeled `good first issue`.
+Contributions are welcome — especially new rules, renderers, sample repositories, and UI polish. Read [CONTRIBUTING.md](CONTRIBUTING.md) and [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md). Look for issues labeled `good first issue`, or start with the [seeded roadmap issues](https://github.com/vinycalves/archpulse/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22).
 
 ## License
 
