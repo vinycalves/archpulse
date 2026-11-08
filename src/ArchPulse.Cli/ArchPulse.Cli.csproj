@@ -2,7 +2,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ArchPulse.Core\ArchPulse.Core.csproj" />
-    <ProjectReference Include="..\ArchPulse.Infrastructure\ArchPulse.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Spectre.Console" Version="0.57.2" />
+    <PackageReference Include="Spectre.Console.Cli" Version="0.57.2" />
   </ItemGroup>
 
   <PropertyGroup>
@@ -10,6 +14,23 @@
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <AssemblyName>archpulse</AssemblyName>
+    <RootNamespace>ArchPulse.Cli</RootNamespace>
+    <PackAsTool>true</PackAsTool>
+    <ToolCommandName>archpulse</ToolCommandName>
+    <PackageId>ArchPulse.Cli</PackageId>
+    <Version>0.2.0</Version>
+    <Authors>Vinycius Florencio</Authors>
+    <Description>Terminal-first architecture governance for C#.</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/vinycalves/archpulse</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/vinycalves/archpulse</RepositoryUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageTags>architecture;csharp;dotnet;cli;governance</PackageTags>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
 
 </Project>

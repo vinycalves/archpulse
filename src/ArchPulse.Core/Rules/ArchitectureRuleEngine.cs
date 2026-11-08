@@ -147,6 +147,38 @@ public sealed class ArchitectureRuleEngine(ArchitectureRules rules)
             }
         }
 
+        var framedComponents = graph.Components
+            .Where(component => component.Metadata is not null
+                && component.Metadata.TryGetValue("targetFramework", out var framework)
+                && !string.IsNullOrWhiteSpace(framework))
+            .Select(component => new
+            {
+                Component = component,
+                Framework = component.Metadata!["targetFramework"]
+            })
+            .ToArray();
+
+        if (framedComponents.Length > 1)
+        {
+            var majorityFramework = framedComponents
+                .GroupBy(item => item.Framework, StringComparer.OrdinalIgnoreCase)
+                .OrderByDescending(group => group.Count())
+                .ThenBy(group => group.Key, StringComparer.OrdinalIgnoreCase)
+                .First()
+                .Key;
+
+            foreach (var item in framedComponents.Where(item =>
+                         !item.Framework.Equals(majorityFramework, StringComparison.OrdinalIgnoreCase)))
+            {
+                Add(
+                    "AP007",
+                    ViolationSeverity.Warning,
+                    "Inconsistent target framework",
+                    $"{item.Component.Name} targets {item.Framework}, while the solution majority targets {majorityFramework}.",
+                    item.Component.Id);
+            }
+        }
+
         foreach (var rule in rules.ForbiddenDependencies)
         {
             foreach (var dependency in graph.Dependencies)

@@ -35,10 +35,9 @@ body:
         - Scanner / project discovery
         - Aspire AppHost parser
         - Rules engine
-        - API
-        - Worker
-        - Dashboard / graph
-        - CLI
+        - CLI / terminal output
+        - Graph / diff
+        - Watch mode
         - CI / integrations
         - Documentation
         - Other

@@ -1,6 +1,6 @@
 # ADR 0006: Static web UI with a same-origin API proxy
 
-- **Status:** Accepted
+- **Status:** Superseded by [ADR 0007](0007-terminal-first-cli.md)
 - **Date:** 2026-11-08
 
 ## Context

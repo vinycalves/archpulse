@@ -2,11 +2,11 @@
 
 ## Mission
 
-Make software architecture **visible, testable, and reviewable** in the place where it actually lives: the repository.
+Make architecture rules **executable from the terminal** for C# teams: fast to run, easy to explain, and hard to ignore in CI.
 
 ## The problem
 
-Architecture knowledge is usually stored in three fragile places:
+Architecture knowledge usually lives in three fragile places:
 
 1. Diagrams that are drawn once and never updated.
 2. Conventions that exist only in senior engineers' heads.
@@ -18,38 +18,36 @@ The result is architectural drift: the system slowly becomes something nobody de
 
 | Persona | Job to be done |
 |---|---|
-| Tech lead | Understand the real dependency graph before changing a boundary. |
-| Software architect | Encode decisions as executable rules and review architectural deltas. |
+| C# tech lead | Understand the real dependency graph before changing a boundary. |
+| Software architect | Encode decisions as rules and review architectural deltas. |
 | Platform engineer | Add architecture checks to CI without a heavyweight governance program. |
-| Contributor | Understand a new codebase without reading every project file. |
-| Educator | Show students the architecture of real repositories, not slideware. |
+| Contributor | Understand a new .NET codebase without reading every project file. |
+| Educator | Show students the architecture of real C# repositories, not slideware. |
 
 ## Principles
 
-1. **Derive, don't duplicate.** The model comes from project files and Aspire declarations, not from a second diagram that can rot.
-2. **Explain every finding.** A violation must say which rule fired, which components are involved, and why it matters.
-3. **Aspire-native, .NET-first.** The first-class experience is .NET + Aspire; other ecosystems arrive through plugins.
-4. **Local-first.** The scanner must work on a laptop with no cloud account. The hosted experience is an optional layer.
-5. **Deterministic output.** The same repository produces the same graph and the same findings.
-6. **Small, reviewable rules.** Architecture policy should be readable by the team that owns it.
-7. **Open by default.** MIT license, public roadmap, RFCs for platform changes.
+1. **Terminal-first.** The primary interface is a command, not a website. Output must be useful in a terminal, a CI log, and a code review.
+2. **Derive, don't duplicate.** The model comes from `.csproj`, project references, package references, and Aspire AppHost declarations.
+3. **Explain every finding.** A violation must say which rule fired, which components are involved, and why it matters.
+4. **C#-native.** Understand the things .NET teams actually use: solutions, projects, TFMs, test projects, package references, and AppHost resources.
+5. **Local-first.** No account, database, server, or network dependency for the core workflow.
+6. **Deterministic output.** The same repository produces the same graph and the same findings.
+7. **Small, reviewable rules.** Architecture policy should be readable by the team that owns it.
+8. **Open by default.** MIT license, public roadmap, RFCs for platform changes.
 
 ## Non-goals
 
+- A web dashboard, SaaS, or hosted service.
 - A drag-and-drop diagram editor.
 - A runtime APM or tracing product.
 - A replacement for code review or human judgment.
-- A tool that executes or builds the target repository.
+- A tool that builds or executes the target repository.
 - A generic graph database or CMDB.
 
 ## Success metrics
 
-- **Time to first map:** under 5 minutes from clone to dashboard.
+- **Time to first check:** under 5 seconds for a typical solution.
 - **Signal quality:** every new rule has tests and a documented rationale.
-- **Adoption:** scans run in CI on every pull request.
-- **Community:** external contributors own rules, renderers, and sample repositories.
+- **Adoption:** `archpulse check` runs on every pull request.
+- **Community:** external contributors own rules, commands, and sample repositories.
 - **Architectural outcomes:** teams can point to a drift finding they caught before production.
-
-## The long game
-
-ArchPulse should become the place where an architecture decision is not just written down, but continuously checked. The project is successful when a reviewer can look at a pull request and say: “this changes the architecture, and here is exactly how.”

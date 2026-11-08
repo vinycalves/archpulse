@@ -2,6 +2,13 @@
 
 ArchPulse evaluates rules after building the graph. Every finding is deterministic and explainable.
 
+Use the CLI to inspect the catalog:
+
+```bash
+archpulse rules
+archpulse explain AP002
+```
+
 ## Built-in rules
 
 | Rule | Severity | Rationale |
@@ -12,6 +19,7 @@ ArchPulse evaluates rules after building the graph. Every finding is determinist
 | `AP003` | Error | Production code referencing a test project leaks test dependencies into the product. |
 | `AP004` | Error | A service referencing the Aspire AppHost inverts the orchestration dependency. |
 | `AP006` | Warning | A domain project referencing EF Core, Npgsql, SQL Server, Dapper, Redis, RabbitMQ, MassTransit, Kafka, or MongoDB couples the domain to persistence. |
+| `AP007` | Warning | A project targeting a different framework than the solution majority signals accidental drift. |
 | `AP100` | Configurable | A repository-specific forbidden dependency from `.archpulse/rules.json`. |
 
 ## Custom rules
@@ -33,6 +41,12 @@ Create `.archpulse/rules.json` at the repository root:
 }
 ```
 
+Generate a starter file with:
+
+```bash
+archpulse init .
+```
+
 ### Fields
 
 | Field | Required | Description |
@@ -52,10 +66,10 @@ Patterns support `*` (any sequence) and `?` (one character), case-insensitively:
 
 ## Adding a built-in rule
 
-1. Add the rule id and rationale to this document.
+1. Add the rule to `RuleCatalog` in `ArchPulse.Core/Rules`.
 2. Implement the check in `ArchPulse.Core/Rules/ArchitectureRuleEngine.cs`.
 3. Add a unit test with a minimal fixture in `tests/ArchPulse.Core.Tests`.
-4. Add a sample or update the ContosoShop sample if the rule needs a demo.
-5. Update the README rule table.
+4. Update this document and the README rule table.
+5. If the rule needs a demo, update `samples/ContosoShop` — but keep the sample small.
 
-Rules should be small, deterministic, and backed by evidence. Avoid rules that require building or executing the target repository.
+Rules must be deterministic, explainable, and backed by evidence in the graph. They must not build or execute the target repository.

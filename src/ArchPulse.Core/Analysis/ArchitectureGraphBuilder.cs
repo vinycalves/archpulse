@@ -207,6 +207,10 @@ public sealed class ArchitectureGraphBuilder
             {
                 ["sdk"] = project.Sdk,
                 ["outputType"] = project.OutputType ?? string.Empty,
+                ["targetFramework"] = project.Properties.GetValueOrDefault("TargetFramework")
+                    ?? project.Properties.GetValueOrDefault("TargetFrameworks")
+                    ?? string.Empty,
+                ["nullable"] = project.Properties.GetValueOrDefault("Nullable") ?? string.Empty,
                 ["packages"] = string.Join(", ", project.PackageReferences)
             });
     }

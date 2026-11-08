@@ -15,7 +15,8 @@ Closes #
 ```bash
 dotnet build ArchPulse.slnx
 dotnet test ArchPulse.slnx
-dotnet run --project src/ArchPulse.Cli -- scan samples/ContosoShop --output artifacts/contoso
+dotnet run --project src/ArchPulse.Cli -- scan samples/ContosoShop
+dotnet run --project src/ArchPulse.Cli -- check .
 ```
 
 ## Checklist
