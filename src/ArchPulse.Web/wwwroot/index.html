@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ArchPulse — Living architecture for .NET</title>
+  <meta name="description" content="ArchPulse discovers .NET and Aspire architecture, renders a living map, and flags drift before it becomes debt.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/cytoscape@3.30.4/dist/cytoscape.min.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <div class="ambient ambient-one" aria-hidden="true"></div>
+  <div class="ambient ambient-two" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="ArchPulse home">
+      <span class="brand-mark" aria-hidden="true">
+        <svg width="30" height="30" viewBox="0 0 30 30" fill="none">
+          <path d="M15 2.5L26 9V21L15 27.5L4 21V9L15 2.5Z" stroke="url(#logo-gradient)" stroke-width="1.6"/>
+          <path d="M10 19.5V11.5L15 8.5L20 11.5V19.5L15 22.5L10 19.5Z" stroke="url(#logo-gradient)" stroke-width="1.1" opacity=".65"/>
+          <circle cx="15" cy="15" r="2.1" fill="url(#logo-gradient)"/>
+          <defs>
+            <linearGradient id="logo-gradient" x1="4" y1="2.5" x2="26" y2="27.5" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#8b5cf6"/>
+              <stop offset="1" stop-color="#22d3ee"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </span>
+      <span>ArchPulse</span>
+    </a>
+
+    <nav class="topnav" aria-label="Main navigation">
+      <a href="#how">How it works</a>
+      <a href="https://github.com/vinycalves/archpulse" target="_blank" rel="noreferrer">GitHub</a>
+      <a href="https://github.com/vinycalves/archpulse/tree/main/docs" target="_blank" rel="noreferrer">Docs</a>
+      <span class="version-pill">v0.1 alpha</span>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="eyebrow"><span class="pulse-dot"></span> Open source · .NET Aspire · MIT</div>
+      <h1>See the architecture<br><span class="gradient-text">your code actually has.</span></h1>
+      <p class="lede">
+        ArchPulse scans .NET repositories, discovers Aspire resources, renders a living
+        map of your system, and flags architectural drift before it becomes debt.
+      </p>
+
+      <div class="scan-card">
+        <form id="scan-form" class="scan-form">
+          <label class="sr-only" for="source-type">Source type</label>
+          <select id="source-type" name="sourceType" aria-label="Source type">
+            <option value="github">GitHub URL</option>
+            <option value="path">Local path</option>
+          </select>
+
+          <label class="sr-only" for="source-value">Repository</label>
+          <input
+            id="source-value"
+            name="sourceValue"
+            type="text"
+            autocomplete="off"
+            spellcheck="false"
+            placeholder="https://github.com/dotnet/eShop"
+            required>
+
+          <button class="button primary" type="submit" id="scan-button">
+            <span class="spinner hidden" id="scan-spinner" aria-hidden="true"></span>
+            Scan repository
+          </button>
+          <button class="button ghost" type="button" id="demo-button">Try the demo</button>
+        </form>
+        <p class="hint" id="status" role="status" aria-live="polite">
+          Public GitHub repositories only. Scans run in a background worker.
+        </p>
+      </div>
+    </section>
+
+    <section id="dashboard" class="dashboard hidden" aria-live="polite">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow small">Current scan</p>
+          <h2 id="scan-title">Architecture report</h2>
+          <p id="scan-source" class="muted"></p>
+        </div>
+        <span id="scan-status-badge" class="status-badge">Queued</span>
+      </div>
+
+      <div class="summary-grid">
+        <article class="metric">
+          <span class="metric-label">Components</span>
+          <strong id="metric-components">0</strong>
+          <span class="metric-foot">discovered</span>
+        </article>
+        <article class="metric">
+          <span class="metric-label">Dependencies</span>
+          <strong id="metric-dependencies">0</strong>
+          <span class="metric-foot">mapped</span>
+        </article>
+        <article class="metric">
+          <span class="metric-label">Violations</span>
+          <strong id="metric-violations">0</strong>
+          <span class="metric-foot" id="metric-violations-foot">none</span>
+        </article>
+        <article class="metric">
+          <span class="metric-label">Cycles</span>
+          <strong id="metric-cycles">0</strong>
+          <span class="metric-foot">project references</span>
+        </article>
+      </div>
+
+      <div class="workspace">
+        <section class="panel graph-panel">
+          <div class="panel-head">
+            <div>
+              <h3>Architecture map</h3>
+              <p id="graph-subtitle" class="muted">Components, dependencies, and Aspire resources.</p>
+            </div>
+            <div class="tabs" role="tablist" aria-label="Report views">
+              <button class="tab active" type="button" data-view="graph" role="tab" aria-selected="true">Graph</button>
+              <button class="tab" type="button" data-view="report" role="tab" aria-selected="false">Report</button>
+              <button class="tab" type="button" data-view="mermaid" role="tab" aria-selected="false">Mermaid</button>
+            </div>
+          </div>
+
+          <div id="view-graph" class="view">
+            <div id="cy" class="graph" role="img" aria-label="Interactive architecture graph"></div>
+            <div id="graph-empty" class="empty hidden">No components to display.</div>
+            <div id="node-detail" class="node-detail hidden"></div>
+            <div class="legend" aria-label="Graph legend">
+              <span><i class="legend-dot web"></i>Web</span>
+              <span><i class="legend-dot worker"></i>Worker</span>
+              <span><i class="legend-dot library"></i>Library</span>
+              <span><i class="legend-dot apphost"></i>AppHost</span>
+              <span><i class="legend-dot data"></i>Data</span>
+              <span><i class="legend-dot external"></i>External</span>
+            </div>
+          </div>
+
+          <div id="view-report" class="view hidden">
+            <pre id="report-content" class="code-block"></pre>
+          </div>
+
+          <div id="view-mermaid" class="view hidden">
+            <pre id="mermaid-content" class="code-block"></pre>
+          </div>
+        </section>
+
+        <aside class="panel findings-panel">
+          <div class="panel-head">
+            <div>
+              <h3>Findings</h3>
+              <p id="findings-subtitle" class="muted">Rules evaluated against this scan.</p>
+            </div>
+          </div>
+          <div id="violations" class="violations"></div>
+          <div class="downloads">
+            <a id="download-report" class="button-link" href="#" download>Download report</a>
+            <a id="download-mermaid" class="button-link ghost" href="#" download>Download Mermaid</a>
+          </div>
+        </aside>
+      </div>
+
+      <section class="panel recent-panel">
+        <div class="panel-head">
+          <div>
+            <h3>Recent scans</h3>
+            <p class="muted">Click a scan to reopen its report.</p>
+          </div>
+        </div>
+        <div id="recent-scans" class="recent-list"></div>
+      </section>
+    </section>
+
+    <section class="how" id="how">
+      <div class="section-heading centered">
+        <div>
+          <p class="eyebrow small">The loop</p>
+          <h2>From repository to review, in one scan.</h2>
+        </div>
+      </div>
+      <div class="how-grid">
+        <article>
+          <span class="step">01</span>
+          <h3>Discover</h3>
+          <p>Reads project references, package dependencies, and Aspire AppHost declarations without requiring a build.</p>
+        </article>
+        <article>
+          <span class="step">02</span>
+          <h3>Map</h3>
+          <p>Turns the repository into a living graph grouped by domain, application, infrastructure, presentation, and runtime.</p>
+        </article>
+        <article>
+          <span class="step">03</span>
+          <h3>Guard</h3>
+          <p>Evaluates layer rules, cycles, test references, and forbidden dependencies. Every finding is explainable.</p>
+        </article>
+        <article>
+          <span class="step">04</span>
+          <h3>Diff</h3>
+          <p>Compare two scans and post the architectural delta on every pull request with the CLI or the API.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <div>
+        <span class="brand footer-brand">ArchPulse</span>
+        <p class="muted">Living architecture for .NET and Aspire applications.</p>
+      </div>
+      <div class="footer-links">
+        <a href="https://github.com/vinycalves/archpulse" target="_blank" rel="noreferrer">GitHub</a>
+        <a href="https://github.com/vinycalves/archpulse/blob/main/LICENSE" target="_blank" rel="noreferrer">MIT License</a>
+        <a href="https://github.com/vinycalves/archpulse/issues" target="_blank" rel="noreferrer">Issues</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

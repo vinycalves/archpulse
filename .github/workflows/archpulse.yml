@@ -1,0 +1,72 @@
+name: Architecture diff
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+concurrency:
+  group: archpulse-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  diff:
+    name: Architecture diff
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout baseline
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.base.sha }}
+          path: baseline
+
+      - name: Checkout current
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          path: current
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Scan baseline
+        run: dotnet run --project current/src/ArchPulse.Cli -- scan baseline --output artifacts/baseline --format json
+
+      - name: Scan current
+        run: dotnet run --project current/src/ArchPulse.Cli -- scan current --output artifacts/current --format json
+
+      - name: Render architecture diff
+        run: dotnet run --project current/src/ArchPulse.Cli -- diff artifacts/baseline/architecture.json artifacts/current/architecture.json --format markdown --output artifacts/architecture-diff.md
+
+      - name: Write architecture diff JSON
+        run: dotnet run --project current/src/ArchPulse.Cli -- diff artifacts/baseline/architecture.json artifacts/current/architecture.json --format json --output artifacts/architecture-diff.json
+
+      - name: Upload architecture diff
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: architecture-diff
+          path: |
+            artifacts/architecture-diff.md
+            artifacts/architecture-diff.json
+          if-no-files-found: ignore
+
+      - name: Comment on pull request
+        if: github.event.pull_request.head.repo.full_name == github.repository
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh pr comment ${{ github.event.pull_request.number }} --body-file artifacts/architecture-diff.md
+
+      - name: Fail on new architecture errors
+        run: |
+          if jq -e '.newViolations[] | select(.severity == "Error" or .severity == "Critical")' artifacts/architecture-diff.json > /dev/null; then
+            echo "New architecture errors were introduced. Review the architecture diff artifact."
+            exit 1
+          fi

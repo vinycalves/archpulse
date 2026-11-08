@@ -1,0 +1,62 @@
+name: Feature request
+description: Propose a rule, renderer, integration, or product improvement.
+title: "[Feature]: "
+labels: ["enhancement", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Good feature requests start with a problem, not a solution. Tell us what
+        you are trying to accomplish and why the current behavior falls short.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What architectural question or workflow is hard today?
+      placeholder: When reviewing a PR, I cannot see...
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: Describe the smallest useful version.
+      placeholder: Add a rule that...
+    validations:
+      required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Scanner / project discovery
+        - Aspire AppHost parser
+        - Rules engine
+        - API
+        - Worker
+        - Dashboard / graph
+        - CLI
+        - CI / integrations
+        - Documentation
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Existing tools, workarounds, or simpler options.
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: contribution
+    attributes:
+      label: Contribution
+      options:
+        - label: I am willing to open a pull request for this.
+          required: false
