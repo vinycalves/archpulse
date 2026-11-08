@@ -134,6 +134,26 @@ public sealed class ArchitectureAnalysisTests
     }
 
     [Fact]
+    public void FlagsInconsistentTargetFrameworks()
+    {
+        using var repository = new TestRepository();
+
+        repository.WriteProject("src/Modern", "Modern", "Microsoft.NET.Sdk");
+        repository.WriteProject(
+            "src/Legacy",
+            "Legacy",
+            "Microsoft.NET.Sdk",
+            targetFramework: "net8.0");
+
+        var outcome = new RepositoryScanner().Scan(repository.Root);
+
+        var violation = Assert.Single(outcome.Violations, item => item.RuleId == "AP007");
+        Assert.Equal(ViolationSeverity.Warning, violation.Severity);
+        Assert.Contains("Legacy", violation.Message);
+        Assert.Contains("net8.0", violation.Message);
+    }
+
+    [Fact]
     public void SummaryCountsServicesAndViolations()
     {
         using var repository = new TestRepository();

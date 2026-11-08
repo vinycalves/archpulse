@@ -1,5 +1,5 @@
 name: Bug report
-description: Report a scanner, rule, API, CLI, or dashboard bug.
+description: Report a scanner, rule, CLI, watch-mode, or diff bug.
 title: "[Bug]: "
 labels: ["bug", "triage"]
 body:
@@ -32,9 +32,9 @@ body:
       label: Steps to reproduce
       description: Include the exact command, URL, or local path if possible.
       placeholder: |
-        1. Run `dotnet run --project src/ArchPulse.AppHost`
-        2. Scan ...
-        3. See ...
+        1. Run `dotnet run --project src/ArchPulse.Cli -- scan .`
+        2. See ...
+        3. Expected ...
     validations:
       required: true
 
@@ -46,11 +46,9 @@ body:
         - Scanner / project discovery
         - Aspire AppHost parser
         - Rules engine
-        - API
-        - Worker
-        - Dashboard / graph
-        - CLI
-        - Aspire orchestration
+        - CLI / terminal output
+        - Graph / diff
+        - Watch mode
         - Documentation
         - Other
     validations:

@@ -1,6 +1,6 @@
 # ADR 0003: Use .NET Aspire for local orchestration
 
-- **Status:** Accepted
+- **Status:** Superseded by [ADR 0007](0007-terminal-first-cli.md)
 - **Date:** 2026-11-08
 
 ## Context

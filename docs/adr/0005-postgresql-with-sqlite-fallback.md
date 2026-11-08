@@ -1,6 +1,6 @@
 # ADR 0005: PostgreSQL in Aspire, SQLite fallback for standalone use
 
-- **Status:** Accepted
+- **Status:** Superseded by [ADR 0007](0007-terminal-first-cli.md)
 - **Date:** 2026-11-08
 
 ## Context

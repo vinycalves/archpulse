@@ -1,56 +1,55 @@
 # Roadmap
 
-ArchPulse is intentionally early. The goal for v0.1 is a complete, honest loop: scan a repository, understand the map, catch a real boundary violation, and compare two scans.
+ArchPulse is intentionally focused: a terminal-first architecture governance tool for C#. The CLI is the product.
 
-## v0.1 — Foundation
+## v0.2 — CLI-first foundation
 
-- [x] .NET solution with Core, Infrastructure, API, Worker, Web, CLI, AppHost, and tests.
+- [x] .NET solution with Core, CLI, and tests.
 - [x] Project and project-reference discovery.
 - [x] Aspire AppHost parser (`AddProject`, data resources, `WithReference`).
 - [x] Architecture graph with layers and kinds.
-- [x] Built-in rules AP000–AP006.
+- [x] Built-in rules AP000–AP007 and AP100.
 - [x] Mermaid, Markdown, and JSON output.
-- [x] Scan queue with PostgreSQL persistence.
-- [x] Background worker.
-- [x] Interactive dashboard with graph, findings, report, and recent scans.
-- [x] CLI `scan` and `diff`.
+- [x] `scan` terminal report.
+- [x] `check` with CI-friendly exit codes.
+- [x] `graph` dependency tree.
+- [x] `diff` architecture delta.
+- [x] `init`, `rules`, `explain`, and `watch`.
 - [x] CI and architecture-diff workflow.
 
-## v0.2 — Signal
+## v0.3 — Deeper C# analysis
 
-- [ ] OpenTelemetry runtime overlay (actual calls, latency, error rates) on the graph.
-- [ ] GitHub App or Action that comments the architecture diff on every PR.
+- [ ] Roslyn namespace-level dependency rules.
 - [ ] `.archpulseignore` and path globs.
-- [ ] Rule packs (`Aspire`, `Clean Architecture`, `Modular Monolith`) selected in config.
-- [ ] Scan leases and stale-job recovery for multiple workers.
-- [ ] EF Core migrations.
-- [ ] Authentication for the API and multi-user scan history.
+- [ ] SARIF output for GitHub code scanning.
+- [ ] NuGet global tool package (`dotnet tool install -g ArchPulse`).
+- [ ] GitHub composite action.
+- [ ] Rule packs (`Clean Architecture`, `Modular Monolith`, `Aspire`).
+- [ ] Stable JSON schema version.
 
-## v0.3 — Ecosystem
+## v0.4 — Terminal experience
 
-- [ ] Plugin API for analyzers (Java, Node.js, Python, Terraform).
-- [ ] C4/Structurizr export.
-- [ ] Architecture decision records linked to components.
-- [ ] Drift timeline and trend charts.
-- [ ] Hosted demo with a curated set of public repositories.
-- [ ] VS Code extension that opens the map for the current workspace.
+- [ ] Interactive `archpulse explore` TUI.
+- [ ] Graph filters by layer, kind, and dependency type.
+- [ ] Baseline cache for faster diffs in CI.
+- [ ] Shell completions.
+- [ ] `archpulse explain` links to docs and examples.
 
 ## v1.0 — Trust
 
-- [ ] Stable graph and report JSON schema with versioning.
 - [ ] Performance budget for 500+ project repositories.
-- [ ] Deployment guides for Kubernetes and Azure Container Apps.
+- [ ] Plugin analyzers for other .NET project types.
 - [ ] Security review and SBOM in releases.
 - [ ] Contributor ladder, maintainers per area, and an RFC process.
 - [ ] Public case studies and a “State of Architecture Drift” report.
 
 ## Good first issues
 
-- Add a new renderer (D2, Graphviz, SVG).
-- Improve the Cytoscape layout and accessibility.
-- Add a rule for “service has no health check”.
-- Add a sample repository with a hexagonal architecture.
-- Translate the UI and docs to Portuguese.
-- Add a `--format sarif` output for GitHub code scanning.
+- Add a new built-in rule with tests and documentation.
+- Add `.archpulseignore` support.
+- Add SARIF output.
+- Publish the CLI as a .NET global tool.
+- Translate the README and CLI messages to Portuguese.
+- Add a hexagonal architecture sample.
+- Improve terminal graph rendering with filters.
 - Add tests for malformed `.csproj` and AppHost files.
-- Improve error messages for invalid Git URLs.

@@ -10,13 +10,14 @@ updates:
       aspire:
         patterns:
           - "Aspire.*"
-      opentelemetry:
+      spectre:
         patterns:
-          - "OpenTelemetry.*"
-      ef-core:
+          - "Spectre.*"
+      testing:
         patterns:
-          - "Microsoft.EntityFrameworkCore*"
-          - "Npgsql*"
+          - "Microsoft.NET.Test.Sdk"
+          - "xunit*"
+          - "coverlet*"
 
   - package-ecosystem: github-actions
     directory: /

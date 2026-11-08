@@ -1,13 +1,7 @@
 <Solution>
   <Folder Name="/src/">
-    <Project Path="src/ArchPulse.Api/ArchPulse.Api.csproj" />
-    <Project Path="src/ArchPulse.AppHost/ArchPulse.AppHost.csproj" />
     <Project Path="src/ArchPulse.Cli/ArchPulse.Cli.csproj" />
     <Project Path="src/ArchPulse.Core/ArchPulse.Core.csproj" />
-    <Project Path="src/ArchPulse.Infrastructure/ArchPulse.Infrastructure.csproj" />
-    <Project Path="src/ArchPulse.ServiceDefaults/ArchPulse.ServiceDefaults.csproj" />
-    <Project Path="src/ArchPulse.Web/ArchPulse.Web.csproj" />
-    <Project Path="src/ArchPulse.Worker/ArchPulse.Worker.csproj" />
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/ArchPulse.Core.Tests/ArchPulse.Core.Tests.csproj" />

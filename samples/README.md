@@ -10,7 +10,9 @@ without requiring you to break your own repository.
 Scan it with:
 
 ```bash
-dotnet run --project src/ArchPulse.Cli -- scan samples/ContosoShop --output artifacts/contoso
+dotnet run --project src/ArchPulse.Cli -- scan samples/ContosoShop
+dotnet run --project src/ArchPulse.Cli -- check samples/ContosoShop
 ```
 
-Open `artifacts/contoso/report.md` to see the findings.
+`check` exits with code `1` because the sample intentionally violates `AP002`.
+Use `scan --output artifacts/contoso` to write JSON, Mermaid, and Markdown artifacts.

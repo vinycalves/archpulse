@@ -36,11 +36,17 @@ jobs:
       - name: Test
         run: dotnet test ArchPulse.slnx --no-build --configuration Release --logger "trx;LogFileName=test-results.trx"
 
+      - name: Check ArchPulse architecture
+        run: dotnet run --project src/ArchPulse.Cli --configuration Release -- check . --fail-on error
+
       - name: Scan ArchPulse itself
         run: dotnet run --project src/ArchPulse.Cli --configuration Release -- scan . --output artifacts/self --fail-on error
 
       - name: Scan the intentionally flawed sample
         run: dotnet run --project src/ArchPulse.Cli --configuration Release -- scan samples/ContosoShop --output artifacts/contoso
+
+      - name: Render the dependency graph
+        run: dotnet run --project src/ArchPulse.Cli --configuration Release -- graph samples/ContosoShop --depth 2
 
       - name: Upload architecture artifacts
         if: always()

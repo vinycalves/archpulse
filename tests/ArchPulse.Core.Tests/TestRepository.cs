@@ -32,7 +32,8 @@ internal sealed class TestRepository : IDisposable
         string projectName,
         string sdk,
         IEnumerable<string>? projectReferences = null,
-        IEnumerable<string>? packageReferences = null)
+        IEnumerable<string>? packageReferences = null,
+        string targetFramework = "net10.0")
     {
         var references = string.Join(
             Environment.NewLine,
@@ -48,7 +49,7 @@ internal sealed class TestRepository : IDisposable
             $"""
             <Project Sdk="{sdk}">
               <PropertyGroup>
-                <TargetFramework>net10.0</TargetFramework>
+                <TargetFramework>{targetFramework}</TargetFramework>
                 <OutputType>{(sdk.Contains(".Web") || sdk.Contains(".Worker") ? "Exe" : "Library")}</OutputType>
               </PropertyGroup>
               <ItemGroup>
